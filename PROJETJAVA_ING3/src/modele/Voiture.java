@@ -18,12 +18,13 @@ public class Voiture {
     private Date dateLocation;
     private double prixJour;
     private String image;
+    private String classe;
 
     // Constructeur par défaut
     public Voiture() {}
 
     // Constructeur avec paramètres
-    public Voiture(int id, String modele, String marque, String immatriculation, double kilometrage, String couleur, byte louee, int idLoueur, int localisation, Date dateLocation, double prixJour, String image) {
+    public Voiture(int id, String modele, String marque, String immatriculation, double kilometrage, String couleur, byte louee, int idLoueur, int localisation, Date dateLocation, double prixJour, String image, String Classe) {
         this.id = id;
         this.modele = modele;
         this.marque = marque;
@@ -36,6 +37,7 @@ public class Voiture {
         this.dateLocation = dateLocation;
         this.prixJour = prixJour;
         this.image = image;
+        this.classe = Classe;
     }
 
     public Voiture(String immatriculation, double kilometrage, String couleur, int localisation,
@@ -51,29 +53,36 @@ public class Voiture {
         this.image = image;
     }
 
-    public static List<Voiture> searchAvailableCars(String agency, Date startDate, Date endDate) throws SQLException {
+    public static List<Voiture> searchAvailableCars(String agency, Date startDate, Date endDate, String Classe) throws SQLException {
         List<Voiture> availableCars = new ArrayList<>();
-        String sql = "SELECT Modele, Marque, `Prix/Jour`, Image, Immatriculation, Kilometrage, Couleur, Localisation FROM voiture " +
+        String sql = "SELECT * FROM voiture " +
                 "WHERE Localisation = (SELECT `ID Agence` FROM agence WHERE Nom = ?) " +
-                "AND (Louée = 0 OR (`Date début de Location` > ? OR `Date fin de Location` < ?))";
+                "AND (Louée = 0 OR (`Date début de Location` > ? OR `Date fin de Location` < ?)) " +
+                "AND Classe = ?";
 
         try (Connection conn = connecter();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, agency);
             pstmt.setDate(2, new java.sql.Date(startDate.getTime()));
             pstmt.setDate(3, new java.sql.Date(endDate.getTime()));
+            pstmt.setString(4,Classe);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     availableCars.add(new Voiture(
+                            rs.getInt("ID Voiture"),
+                            rs.getString("Modele"),
+                            rs.getString("Marque"),
                             rs.getString("Immatriculation"),
                             rs.getDouble("Kilometrage"),
                             rs.getString("Couleur"),
+                            rs.getByte("Louée"),
+                            rs.getInt("IDLoueur"),
                             rs.getInt("Localisation"),
-                            rs.getString("Modele"),
-                            rs.getString("Marque"),
+                            rs.getDate("Date début de Location"),
                             rs.getDouble("Prix/Jour"),
-                            rs.getString("Image")
+                            rs.getString("Image"),
+                            rs.getString("Classe")
                     ));
                 }
             }
@@ -183,5 +192,9 @@ public class Voiture {
 
     public String getModele() {
         return modele;
+    }
+
+    public String getClasse() {
+        return classe;
     }
 }
