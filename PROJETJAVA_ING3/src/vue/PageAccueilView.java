@@ -107,13 +107,22 @@ public class PageAccueilView extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Ajout des composants de recherche
+
         JLabel locationLabel = new JLabel("Choisissez votre agence de départ:");
         searchPanel.add(locationLabel, gbc);
 
         gbc.gridx = 1;
         JComboBox<String> locationComboBox = new JComboBox<>(new String[]{"Paris", "Nice", "Marseille", "Lyon"});
         searchPanel.add(locationComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel vehicleClassLabel = new JLabel("Choisissez la classe de véhicule:");
+        searchPanel.add(vehicleClassLabel, gbc);
+
+        gbc.gridx = 1;
+        JComboBox<String> vehicleClassComboBox  = new JComboBox<>(new String[]{"Mini", "Compacte", "SUV", "Electrique", "Berline", "4X4"});
+        searchPanel.add(vehicleClassComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy++;
@@ -161,8 +170,9 @@ public class PageAccueilView extends JFrame {
                 Date pickupDate = (Date) pickupDateSpinner.getValue();
                 Date returnDate = (Date) returnDateSpinner.getValue();
                 String Agence = (String) locationComboBox.getSelectedItem();
+                String Classe = (String) vehicleClassComboBox.getSelectedItem();
 
-                searchAvailableCars(pickupDate,returnDate,Agence);
+                searchAvailableCars(pickupDate,returnDate,Agence, Classe);
 
             }
         });
@@ -184,15 +194,15 @@ public class PageAccueilView extends JFrame {
         return (Integer) ageSpinner.getValue();
     }
 
-    private void searchAvailableCars(Date pickup, Date returnDate, String agency) {
+    private void searchAvailableCars(Date pickup, Date returnDate, String agency, String Classe) {
 
         try{
-            List<Voiture> cars = Voiture.searchAvailableCars(agency, pickup, returnDate);
+            List<Voiture> cars = Voiture.searchAvailableCars(agency, pickup, returnDate,Classe);
             if (cars.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Aucune voiture disponible.");
             } else {
                 dispose();
-                ResultsView resultsView = new ResultsView(cars,Utilisateur,pickup,returnDate,agency);
+                ResultsView resultsView = new ResultsView(cars,Utilisateur,pickup,returnDate,agency,Classe);
                 resultsView.setVisible(true);
                 //displaySearchResults(cars);
             }

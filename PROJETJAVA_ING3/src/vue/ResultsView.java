@@ -8,9 +8,6 @@ import modele.Voiture;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import java.util.*;
 import java.util.List;
 
@@ -20,13 +17,15 @@ public class ResultsView extends JFrame {
     private Loueur LoueurConnectee;
     private Date startDate, endDate;
     private String agency;
-    public ResultsView(List<Voiture> cars, Loueur loueur1, Date startDate, Date endDate, String agency) {
+    private String Classe;
+    public ResultsView(List<Voiture> cars, Loueur loueur1, Date startDate, Date endDate, String agency, String Classe) {
 
         this.LoueurConnectee = loueur1;
         this.cars = cars;
         this.startDate = startDate;
         this.endDate = endDate;
         this.agency = agency;
+        this.Classe = Classe;
 
         setTitle("Résultats de la recherche de voitures");
         setSize(1100, 600);
@@ -98,12 +97,12 @@ public class ResultsView extends JFrame {
 
         for (Voiture car : cars) {
 
-            JPanel carPanel = new JPanel(new BorderLayout(10, 10));
-            carPanel.setBackground(new Color(203, 182, 44));
+            JPanel carPanel = new JPanel(new BorderLayout());
+            carPanel.setBorder(BorderFactory.createLineBorder(new Color(120, 144, 156), 2));;
 
-            JPanel infoPanel  = new JPanel();
+            JPanel infoPanel = new JPanel();
             infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-            infoPanel.setBackground(new Color(203, 182, 44)); // Couleur rose pâle
+            infoPanel.setBackground(new Color(224, 242, 241)); // Light teal background
 
             String carInfoHtml = String.format("<html>Modèle: %s<br>Marque: %s<br>Prix par jour: %.2f€<br>" +
                     "Immatriculation: %s<br>Kilométrage: %.0f km<br>Couleur: %s<br>" +
@@ -117,8 +116,8 @@ public class ResultsView extends JFrame {
             infoPanel.add(carLabel);
 
             JPanel pricePanel = new JPanel();
-            pricePanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-            pricePanel.setBackground(new Color(203, 182, 44));
+            pricePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+            pricePanel.setBackground(new Color(224, 242, 241));
 
             JLabel priceLabel = new JLabel(String.format("%.2f€ par jour", car.getPrixJour()));
             priceLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -139,9 +138,9 @@ public class ResultsView extends JFrame {
             }
                     //JOptionPane.showMessageDialog(this, "Réservation pour " + car.getModele()));
             );
+
             pricePanel.add(priceLabel);
             pricePanel.add(bookButton);
-
             infoPanel.add(pricePanel);
 
             carPanel.add(infoPanel, BorderLayout.CENTER);
@@ -149,9 +148,9 @@ public class ResultsView extends JFrame {
             if (car.getImage() != null && !car.getImage().isEmpty()) {
                 URL imageUrl = getClass().getResource("/images/" + car.getImage());
                 if (imageUrl != null) {
-                    ImageIcon icon = new ImageIcon(new ImageIcon(imageUrl).getImage().getScaledInstance(200, 120, Image.SCALE_DEFAULT));
-                    JLabel imageLabel = new JLabel(icon);
-                    carPanel.add(imageLabel, BorderLayout.WEST);
+                    ImageIcon icon = new ImageIcon(new ImageIcon(imageUrl).getImage().getScaledInstance(400, 240, Image.SCALE_SMOOTH));
+                    JLabel imageLabel = new JLabel(icon, JLabel.CENTER);
+                    carPanel.add(imageLabel, BorderLayout.NORTH);
                 } else {
                     System.out.println("Image file not found: " + car.getImage());
                 }
