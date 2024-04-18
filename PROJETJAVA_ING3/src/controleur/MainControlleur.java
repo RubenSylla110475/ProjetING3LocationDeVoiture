@@ -32,26 +32,6 @@ public class MainControlleur {
         return DriverManager.getConnection(jdbcUrl, username, password);
     }
 
-    public void tenterConnexion() throws SQLException {
-        String[] ID = vue.DemandeIdentifiant();
-        boolean isValid = VerificationLogin(ID[0], ID[1]);
-        if (isValid) {
-            vue.AffichageMessage("Connexion réussie !");
-            // Redirection ou affichage de la vue suivante
-        } else {
-            vue.AffichageMessage("Erreur de connexion. Veuillez réessayer.");
-        }
-    }
-
-    public void fermerConnexion() {
-        if (this.connection != null) {
-            try {
-                this.connection.close();
-            } catch (SQLException e) {
-                System.out.println("Erreur lors de la fermeture de la connexion à la base de données: " + e.getMessage());
-            }
-        }
-    }
 
     public boolean VerificationLogin(String name, String mdp) throws SQLException
     {

@@ -1,9 +1,8 @@
 package vue;
 
+import controleur.ControleurPaiement;
 import controleur.MainControlleur;
-import modele.Loueur;
-import modele.PageModelAccueil;
-import modele.Voiture;
+import modele.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -123,20 +122,25 @@ public class ResultsView extends JFrame {
             priceLabel.setFont(new Font("Arial", Font.BOLD, 16));
             JButton bookButton = new JButton("Réserver");
             bookButton.addActionListener(e -> {
-                if(LoueurConnectee == null)
-                {
-                    JOptionPane.showMessageDialog(this, "Vous devez être connecté pour réserver.", "Erreur de réservation", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+                        if (LoueurConnectee == null) {
+                            JOptionPane.showMessageDialog(this, "Vous devez être connecté pour réserver.", "Erreur de réservation", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
 
-                Date debutLoc = startDate;
-                Date finLoc = endDate;
+                        Date debutLoc = startDate;
+                        Date finLoc = endDate;
 
-                JOptionPane.showMessageDialog(this, "Réservation pour " + car.getModele());
+                        JOptionPane.showMessageDialog(this, "Réservation pour " + car.getModele());
 
-                AffichageResultat(car, debutLoc, finLoc, LoueurConnectee);
-            }
-                    //JOptionPane.showMessageDialog(this, "Réservation pour " + car.getModele()));
+                        AffichageResultat(car, debutLoc, finLoc, LoueurConnectee);
+
+                        //ReservationModel modeleRes = new ReservationModel();
+                        //VuePaiement vueP = new VuePaiement(LoueurConnectee,car,0,debutLoc,finLoc);
+                        //ControleurPaiement control = new ControleurPaiement(vueP, new InfosPaiement());
+                        dispose();
+                        AvantPaiement avant = new AvantPaiement(new ReservationModel(), new ControleurPaiement(null,null), LoueurConnectee, startDate, endDate, car);
+                        avant.setVisible(true);
+                    }
             );
 
             pricePanel.add(priceLabel);
