@@ -47,6 +47,13 @@ public class AvantPaiement extends JFrame {
         long Days = getDaysBetweenDates(startDate, endDate);
         Days++;
 
+        int reduc=0;
+
+        if(LoueurConnectee.getType()==3)
+        {
+            reduc = 10;
+        }
+
         setTitle("Réservation de voiture");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 600);
@@ -85,7 +92,7 @@ public class AvantPaiement extends JFrame {
         double prixtotal = Days*voiture.getPrixJour();
 
         modelLabel = new JLabel("Modèle de voiture : "+voiture.getModele());
-        priceLabel = new JLabel("Prix : "+prixtotal+"€");
+        priceLabel = new JLabel("Prix : "+prixtotal+"€ | Réduction : "+reduc+"%");
         startDateLabel = new JLabel("Date de début de location : "+startDate);
         endDateLabel = new JLabel("Date de fin de location : "+endDate);
 

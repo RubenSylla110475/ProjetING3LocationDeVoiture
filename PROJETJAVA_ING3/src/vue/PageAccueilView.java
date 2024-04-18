@@ -72,7 +72,9 @@ public class PageAccueilView extends JFrame {
 
                 break;
             case "Qui sommes nous ?":
-
+                dispose();
+                QuiSommesNousVue qui = new QuiSommesNousVue(Utilisateur);
+                qui.setVisible(true);
                 break;
             case "Mes réservations":
                 dispose();
@@ -112,7 +114,7 @@ public class PageAccueilView extends JFrame {
         searchPanel.add(locationLabel, gbc);
 
         gbc.gridx = 1;
-        JComboBox<String> locationComboBox = new JComboBox<>(new String[]{"Paris", "Nice", "Marseille", "Lyon"});
+        JComboBox<String> locationComboBox = new JComboBox<>(new String[]{"Paris", "Nice", "Marseille", "Lyon", "Lille", "Nantes"});
         searchPanel.add(locationComboBox, gbc);
 
         gbc.gridx = 0;
@@ -204,7 +206,6 @@ public class PageAccueilView extends JFrame {
                 dispose();
                 ResultsView resultsView = new ResultsView(cars,Utilisateur,pickup,returnDate,agency,Classe);
                 resultsView.setVisible(true);
-                //displaySearchResults(cars);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erreur lors de la recherche de voitures: " + ex.getMessage());

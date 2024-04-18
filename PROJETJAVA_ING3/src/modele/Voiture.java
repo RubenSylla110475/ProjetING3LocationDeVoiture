@@ -57,7 +57,7 @@ public class Voiture {
         List<Voiture> availableCars = new ArrayList<>();
         String sql = "SELECT * FROM voiture " +
                 "WHERE Localisation = (SELECT `ID Agence` FROM agence WHERE Nom = ?) " +
-                "AND (Louée = 0 OR (`Date début de Location` > ? OR `Date fin de Location` < ?)) " +
+                "AND (Louée = 0 OR (`Date début de Location` > ? AND `Date fin de Location` < ?)) " +
                 "AND Classe = ?";
 
         try (Connection conn = connecter();

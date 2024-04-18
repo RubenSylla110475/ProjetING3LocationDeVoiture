@@ -138,6 +138,14 @@ public class VuePaiement extends JFrame{
                     pst.executeUpdate();
                     JOptionPane.showMessageDialog(null,"Réservation effectuée avec succès");
 
+                    PreparedStatement pstUpdateCar = connection.prepareStatement("UPDATE voiture SET Louée = ?, `Date début de Location` = ?, `Date fin de Location` = ?, `IDLoueur` = ? WHERE `ID Voiture` = ?");
+                    pstUpdateCar.setInt(1,1);
+                    pstUpdateCar.setInt(2,Utilisateur.getId());
+                    pstUpdateCar.setDate(3,new java.sql.Date(start.getTime()));
+                    pstUpdateCar.setDate(4, new java.sql.Date(end.getTime())); // Date de fin de location
+                    pstUpdateCar.setInt(5, resa.getId()); // ID de la voiture
+                    pstUpdateCar.executeUpdate();
+
                     fenetre.dispose();
                     PageModelAccueil model = new PageModelAccueil();
                     PageAccueilView view = new PageAccueilView(model,Utilisateur);

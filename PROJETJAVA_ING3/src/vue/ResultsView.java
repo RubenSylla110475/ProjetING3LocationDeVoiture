@@ -59,7 +59,9 @@ public class ResultsView extends JFrame {
                 view.setVisible(true);
                 break;
             case "Qui sommes nous ?":
-                // Implémentez la navigation vers la page "Qui sommes nous ?"
+                dispose();
+                QuiSommesNousVue qui = new QuiSommesNousVue(LoueurConnectee);
+                qui.setVisible(true);
                 break;
             case "Mes réservations":
                 // Implémentez la navigation vers la page de location
